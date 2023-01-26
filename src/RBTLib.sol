@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity 0.8.17;
 
 import "forge-std/console.sol";
 library RedBlackTreeLib {
@@ -24,7 +24,9 @@ library RedBlackTreeLib {
     function size(Tree storage self) internal view returns (uint){
         return uint256(self.totalNodes);
     }
-
+    function getRoot(Tree storage self) internal view returns(uint){
+        return self.nodes[self.root].value;
+    }
     function getKey(Tree storage self,uint value) internal view returns (uint80) {
         require(value != EMPTY,"value != EMPTY");
         uint80 probe = self.root;
@@ -41,9 +43,14 @@ library RedBlackTreeLib {
         }
         return probe;
     }
-
+    function getNode(Tree storage self, uint value) internal view returns (uint _returnKey, uint _parent, uint _left, uint _right, bool _red) {
+        require(exists(self, value));
+        uint80 key = getKey(self,value);
+        // return(value, self.nodes[key].parent, self.nodes[key].left, self.nodes[key].right, self.nodes[key].red);
+        return(value, self.nodes[self.nodes[key].parent].value, self.nodes[self.nodes[key].left].value, self.nodes[self.nodes[key].right].value, self.nodes[key].red);
+    }
     function exists(Tree storage self, uint value) internal view returns (bool) {
-        return (value != EMPTY) && self.totalNodes != EMPTY && (getKey(self,value) != EMPTY);
+        return (value != EMPTY) && (getKey(self,value) != EMPTY);
         // return (value != EMPTY) && self.totalNodes != EMPTY ;
     }
     function rotateLeft(Tree storage self, uint80 key) private {
@@ -145,7 +152,7 @@ library RedBlackTreeLib {
             }
         }
         
-        uint80 newNodeIdx = 1;
+        uint80 newNodeIdx = ++self.totalNodes;
         // console.log("newNodeIdx ",newNodeIdx);
         self.nodes[newNodeIdx] = Node({value:value,red:true,parent: cursor, left: EMPTY, right: EMPTY});
         if (cursor == EMPTY) {
@@ -162,8 +169,8 @@ library RedBlackTreeLib {
 
     function print(Tree storage self) internal view {
         console.log("--------- root",self.root);
-        uint idx = self.totalNodes;
-        for(uint key;key<=idx;key++){
+        uint _size = self.totalNodes;
+        for(uint key;key<=_size;key++){
             console.log(string.concat(
                 uint2str(key)," ",
                 self.nodes[key].red ? "R" : "B"," ",

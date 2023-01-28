@@ -5,5 +5,8 @@ libs = ['lib']
 gas_reports = ["*"]
 #solc = "0.6.12"
 solc = "0.8.17"
+gas_limit = "18446744073709551615" # u64::MAX
+optimizer = true
+optimizer_runs = 4_294_967_295
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config

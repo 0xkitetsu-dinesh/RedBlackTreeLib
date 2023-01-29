@@ -1,6 +1,5 @@
-// pragma solidity 0.6.12;
 pragma solidity 0.8.17;
-import "./Utils.sol";
+
 // ----------------------------------------------------------------------------
 // BokkyPooBah's Red-Black Tree Library v1.0-pre-release-a
 //
@@ -79,7 +78,7 @@ library BokkyPooBahsRedBlackTreeLibrary {
         return EMPTY;
     }
     function getNode(Tree storage self, uint key) internal view returns (uint _returnKey, uint _parent, uint _left, uint _right, bool _red) {
-        require(exists(self, key),string(abi.encode("BPB TREE::getNode()# !exists ",uint2str(key))));
+        require(exists(self, key));
         return(key, self.nodes[key].parent, self.nodes[key].left, self.nodes[key].right, self.nodes[key].red);
     }
 
@@ -107,20 +106,16 @@ library BokkyPooBahsRedBlackTreeLibrary {
         insertFixup(self, key);
     }
     function remove(Tree storage self, uint key) internal {
-        require(key != EMPTY); // 12
+        require(key != EMPTY);
         require(exists(self, key));
         uint probe;
         uint cursor;
         if (self.nodes[key].left == EMPTY || self.nodes[key].right == EMPTY) {
             cursor = key;
-        } else { // cursor points to next largest element
-            // cursor = self.nodes[key].right;
-            // while (self.nodes[cursor].left != EMPTY) {
-            //     cursor = self.nodes[cursor].left; // 13
-            // }
-            cursor = self.nodes[key].left;
-            while (self.nodes[cursor].right != EMPTY) {
-                cursor = self.nodes[cursor].right; // 13
+        } else {
+            cursor = self.nodes[key].right;
+            while (self.nodes[cursor].left != EMPTY) {
+                cursor = self.nodes[cursor].left;
             }
         }
         if (self.nodes[cursor].left != EMPTY) {
@@ -128,11 +123,7 @@ library BokkyPooBahsRedBlackTreeLibrary {
         } else {
             probe = self.nodes[cursor].right;
         }
-        // key - 475 
-        // cursor - 475
-        // yParent - EMPTY
-        // probe - 454
-        uint yParent = self.nodes[cursor].parent; // 15
+        uint yParent = self.nodes[cursor].parent;
         self.nodes[probe].parent = yParent;
         if (yParent != EMPTY) {
             if (cursor == self.nodes[yParent].left) {

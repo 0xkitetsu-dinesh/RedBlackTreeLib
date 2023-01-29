@@ -258,14 +258,14 @@ library RedBlackTreeLib {
         if (self.nodes[key].left == EMPTY || self.nodes[key].right == EMPTY) {
             cursor = key;
         } else {
-            // cursor = self.nodes[key].right;
-            // while (self.nodes[cursor].left != EMPTY) {
-            //     cursor = self.nodes[cursor].left; // 13
-            // }
-            cursor = self.nodes[key].left;
-            while (self.nodes[cursor].right != EMPTY) {
-                cursor = self.nodes[cursor].right; // 13
+            cursor = self.nodes[key].right;
+            while (self.nodes[cursor].left != EMPTY) {
+                cursor = self.nodes[cursor].left; // 13
             }
+            // cursor = self.nodes[key].left;
+            // while (self.nodes[cursor].right != EMPTY) {
+            //     cursor = self.nodes[cursor].right; // 13
+            // }
         }
         if (self.nodes[cursor].left != EMPTY) {
             probe = self.nodes[cursor].left;

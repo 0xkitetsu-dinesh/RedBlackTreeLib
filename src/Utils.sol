@@ -39,18 +39,3 @@ function uint2str(uint256 _i,uint padding) pure returns (string memory _uintAsSt
     // console.log(padding,len,out_len,string(bstr));
     return string(bstr);
 }
-
-function uintArr2str(uint[] memory _inp) view returns (string memory _uintAsString){
-    if(_inp.length == 0) {
-        return "EMPTY";
-    }
-    // uint _i;
-    // bytes memory bstr;
-    for (uint i;i< _inp.length;i++){
-        // _uintAsString = string(abi.encodePacked);
-        console.log("uintArr2str",uint2str(_inp[i]));
-        // bstr.push(abi.encodePacked(uint2str(_inp[i])));
-    }
-    return "HELLO";
-    
-}
